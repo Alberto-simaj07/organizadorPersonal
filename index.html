@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Control Personal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell" data-view="home">
+    <aside class="sidebar">
+      <div class="brand">
+        <p class="brand-kicker">Centro personal</p>
+        <h1>Orbit</h1>
+        <p class="brand-copy">Estudio y dinero en una sola rutina, sin ruido innecesario.</p>
+      </div>
+      <nav class="nav">
+        <button class="nav-link is-active" data-target="home">Inicio</button>
+        <button class="nav-link" data-target="academic">Academico</button>
+        <button class="nav-link" data-target="routine">Rutina</button>
+        <button class="nav-link" data-target="finance">Finanzas</button>
+      </nav>
+      <section class="sidebar-card sync-card">
+        <p class="sidebar-label">Sincronizacion</p>
+        <h2>Moodle como fuente real</h2>
+        <p>La entrega no se marca a mano. El prototipo ya asume sincronizacion automatica.</p>
+        <button class="ghost-button" type="button">Ultima sync: hoy 8:42</button>
+      </section>
+      <section class="sidebar-card palette-card">
+        <p class="sidebar-label">Modos</p>
+        <div class="palette-list">
+          <div class="palette-item"><span class="swatch swatch-combined"></span><div><strong>Combinado</strong><p>Vista ejecutiva</p></div></div>
+          <div class="palette-item"><span class="swatch swatch-academic"></span><div><strong>Academico</strong><p>Tracker de entregas</p></div></div>
+          <div class="palette-item"><span class="swatch swatch-routine"></span><div><strong>Rutina</strong><p>Habitos y clases</p></div></div>
+          <div class="palette-item"><span class="swatch swatch-finance"></span><div><strong>Finanzas</strong><p>Calendario de gastos</p></div></div>
+        </div>
+      </section>
+
+      <section class="sidebar-card theme-card">
+        <p class="sidebar-label">Tema</p>
+        <div class="theme-switch" id="themeSwitch">
+          <button class="theme-button is-active" type="button" data-theme-value="light">Claro</button>
+          <button class="theme-button" type="button" data-theme-value="dark">Oscuro</button>
+        </div>
+      </section>
+    </aside>
+
+    <main class="main-content">
+      <section class="view is-visible" id="view-home">
+        <header class="topbar topbar-combined">
+          <div>
+            <p class="eyebrow">Vista principal</p>
+            <h2>Panorama del dia</h2>
+            <p class="subcopy">Lo urgente va primero. Lo demas queda visible, pero no invade.</p>
+          </div>
+          <div class="mode-pills">
+            <span class="pill pill-combined">Combinado</span>
+            <span class="pill">Academico</span>
+            <span class="pill">Finanzas</span>
+          </div>
+        </header>
+
+        <section class="summary-grid">
+          <article class="summary-card summary-card-finance">
+            <p class="summary-label">Disponible real</p>
+            <h3>Q 1,240.50</h3>
+            <p class="summary-meta">Saldo despues de compromisos cercanos</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Proximo pago</p>
+            <h3>Internet Hogar</h3>
+            <p class="summary-meta">28 mar - Q 220</p>
+          </article>
+          <article class="summary-card summary-card-academic">
+            <p class="summary-label">Tareas pendientes</p>
+            <h3>7 abiertas</h3>
+            <p class="summary-meta">3 vencen esta semana</p>
+          </article>
+          <article class="summary-card">
+            <p class="summary-label">Proxima entrega</p>
+            <h3>Bases de Datos III</h3>
+            <p class="summary-meta">29 mar - Script de consultas</p>
+          </article>
+        </section>
+
+        <section class="dashboard-layout">
+          <article class="panel panel-hero">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Foco central</p>
+                <h3>Semana cargada pero controlable</h3>
+              </div>
+              <span class="mini-tag">Hoy</span>
+            </div>
+            <div class="hero-grid">
+              <div class="hero-card hero-card-finance">
+                <p class="hero-label">Presion financiera</p>
+                <h4>3 pagos en 8 dias</h4>
+                <p>La semana fuerte cae entre el 28 y el 31. Si no sumas nuevos gastos grandes, llegas bien.</p>
+                <div class="micro-bars">
+                  <span style="height: 36%"></span><span style="height: 48%"></span><span style="height: 32%"></span><span style="height: 66%"></span><span style="height: 42%"></span><span class="accent" style="height: 90%"></span><span style="height: 34%"></span>
+                </div>
+              </div>
+              <div class="hero-card hero-card-academic">
+                <p class="hero-label">Ritmo academico</p>
+                <h4>4 cursos ya muestran entregas verdes</h4>
+                <p>Automatas y Bases de Datos son las materias que conviene mirar primero esta semana.</p>
+                <div class="mini-tracker" id="homeTracker"></div>
+              </div>
+              <div class="hero-card hero-card-routine">
+                <p class="hero-label">Rutina de hoy</p>
+                <h4 id="homeRoutineHeadline">2 de 4 bloques cerrados</h4>
+                <p id="homeRoutineCopy">Todavia te quedan estudio y gym. La noche sigue rescatable si no la saturas.</p>
+                <div class="home-routine-list" id="homeRoutineList"></div>
+              </div>
+            </div>
+          </article>
+
+          <aside class="panel panel-side">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Proximos</p>
+                <h3>Radar de atencion</h3>
+              </div>
+            </div>
+            <div class="timeline" id="combinedTimeline"></div>
+          </aside>
+        </section>
+
+        <section class="bottom-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">Gasto del mes</p><h3>Categorias mas pesadas</h3></div></div>
+            <div class="category-list" id="homeCategories"></div>
+          </article>
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">Notas visibles</p><h3>Cursos que ya tienen calificacion</h3></div></div>
+            <div class="grades-table" id="homeGrades"></div>
+          </article>
+        </section>
+      </section>
+
+      <section class="view" id="view-academic">
+        <header class="topbar topbar-academic">
+          <div>
+            <p class="eyebrow">Modo academico</p>
+            <h2>Tracker de entregas</h2>
+            <p class="subcopy">Moodle decide el estado. Tu vista solo te deja escanear rapido y abrir detalle.</p>
+          </div>
+          <div class="mode-pills"><span class="pill">Combinado</span><span class="pill pill-academic">Academico</span></div>
+        </header>
+
+        <section class="summary-grid summary-grid-academic" id="academicSummary"></section>
+
+        <section class="dashboard-layout dashboard-layout-academic">
+          <article class="panel panel-tracker">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Mes actual</p><h3>Estados por curso y dia</h3></div>
+              <div class="legend">
+                <span><i class="dot dot-empty"></i>Sin entrega</span>
+                <span><i class="dot dot-pending"></i>Pendiente</span>
+                <span><i class="dot dot-done"></i>Entregada</span>
+                <span><i class="dot dot-late"></i>Vencida</span>
+              </div>
+            </div>
+            <div class="tracker-shell"><div class="tracker-grid" id="academicTracker"></div></div>
+          </article>
+
+          <aside class="panel panel-side panel-side-academic">
+            <div class="panel-heading"><div><p class="eyebrow">Detalle</p><h3 id="academicDetailTitle">Selecciona una celda</h3></div></div>
+            <div id="academicDetail" class="detail-stack"></div>
+          </aside>
+        </section>
+
+        <section class="bottom-grid academic-bottom">
+          <article class="panel">
+            <div class="panel-heading"><div><p class="eyebrow">Notas por curso</p><h3>Lo ya calificado</h3></div></div>
+            <div class="grades-table" id="academicGrades"></div>
+          </article>
+        </section>
+      </section>
+
+      <section class="view" id="view-finance">
+        <header class="topbar topbar-finance">
+          <div>
+            <p class="eyebrow">Modo finanzas</p>
+            <h2>Calendario de movimientos</h2>
+            <p class="subcopy">Se registra tocando el dia. Sin elegir fecha en otro lado si ya estas viendo el calendario.</p>
+          </div>
+          <div class="mode-pills"><span class="pill">Combinado</span><span class="pill pill-finance">Finanzas</span></div>
+        </header>
+
+        <section class="finance-overview">
+          <article class="balance-card">
+            <p class="summary-label">Disponible real</p>
+            <h3 id="financeRealBalance">Q 1,240.50</h3>
+            <div class="balance-meta">
+              <div><span>Saldo actual</span><strong id="financeCurrentBalance">Q 1,980.50</strong></div>
+              <div><span>Fijos pendientes</span><strong id="financePendingFixed">Q 520.00</strong></div>
+              <div><span>Variables del mes</span><strong id="financeVariableSpend">Q 220.00</strong></div>
+            </div>
+          </article>
+          <article class="quick-actions">
+            <button class="action-button" data-open-form="expense">+ Gasto</button>
+            <button class="action-button" data-open-form="fixed">+ Gasto fijo</button>
+            <button class="action-button" data-open-form="income">+ Ingreso</button>
+          </article>
+        </section>
+
+        <section class="dashboard-layout dashboard-layout-finance">
+          <article class="panel panel-calendar">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Marzo 2026</p><h3>Calendario financiero</h3></div>
+              <span class="mini-tag finance-tag">Click en un dia para registrar</span>
+            </div>
+            <div class="finance-calendar" id="financeCalendar"></div>
+          </article>
+
+          <aside class="panel panel-side panel-side-finance">
+            <div class="panel-heading"><div><p class="eyebrow">Detalle del dia</p><h3 id="financeDetailTitle">24 mar</h3></div></div>
+            <div id="financeDetail" class="detail-stack"></div>
+            <div class="panel-divider"></div>
+            <div class="panel-heading compact-heading"><div><p class="eyebrow">Categorias</p><h3>Este mes</h3></div></div>
+            <div class="category-list" id="financeCategories"></div>
+          </aside>
+        </section>
+      </section>
+
+      <section class="view" id="view-routine">
+        <header class="topbar topbar-routine">
+          <div>
+            <p class="eyebrow">Modo rutina</p>
+            <h2>Ritmo diario</h2>
+            <p class="subcopy">Habitos personales, bloques de estudio y horario de clases en una sola vista ligera.</p>
+          </div>
+          <div class="mode-pills"><span class="pill">Combinado</span><span class="pill pill-routine">Rutina</span></div>
+        </header>
+
+        <section class="summary-grid summary-grid-routine" id="routineSummary"></section>
+
+        <section class="panel panel-routine-switcher">
+          <div class="panel-heading">
+            <div><p class="eyebrow">Vista de rutina</p><h3>Semanal o mensual</h3></div>
+            <div class="view-switch" id="routineViewSwitch">
+              <button class="view-switch-button is-active" data-routine-view="weekly" type="button">Semanal</button>
+              <button class="view-switch-button" data-routine-view="monthly" type="button">Mensual</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="routine-pane" id="routineWeeklyView">
+          <section class="dashboard-layout dashboard-layout-routine">
+            <article class="panel panel-routine-main">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Semana</p><h3>Clases y estudio</h3></div>
+              </div>
+              <div class="schedule-grid" id="routineSchedule"></div>
+            </article>
+
+            <aside class="panel panel-side panel-side-routine">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Hoy</p><h3>Rutina diaria</h3></div>
+                <button class="action-button action-button-routine" id="openRoutineForm" type="button">+ Agregar bloque</button>
+              </div>
+              <div class="routine-list" id="routineList"></div>
+            </aside>
+          </section>
+        </section>
+
+        <section class="routine-pane is-hidden" id="routineMonthlyView">
+          <section class="dashboard-layout dashboard-layout-routine">
+            <article class="panel panel-routine-main">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Marzo 2026</p><h3>Calendario de rutina</h3></div>
+                <button class="action-button action-button-routine" id="openRoutineFormMonthly" type="button">+ Agregar bloque</button>
+              </div>
+              <div class="routine-calendar" id="routineCalendar"></div>
+            </article>
+
+            <aside class="panel panel-side panel-side-routine">
+              <div class="panel-heading"><div><p class="eyebrow">Detalle del dia</p><h3 id="routineDayDetailTitle">24 mar</h3></div></div>
+              <div class="detail-stack" id="routineDayDetail"></div>
+            </aside>
+          </section>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="entry-dialog" id="entryDialog">
+    <form method="dialog" class="entry-form" id="entryForm">
+      <div class="entry-header">
+        <div><p class="eyebrow">Registro rapido</p><h3 id="dialogTitle">Nuevo movimiento</h3></div>
+        <button class="close-button" type="button" data-close-dialog="entry">Cerrar</button>
+      </div>
+      <input type="hidden" id="entryType" name="entryType">
+      <input type="hidden" id="entryDate" name="entryDate">
+      <label><span>Nombre</span><input id="entryName" name="entryName" type="text" maxlength="48" placeholder="Ej. Almuerzo o Internet hogar"></label>
+      <label><span>Monto</span><input id="entryAmount" name="entryAmount" type="number" min="0" step="0.01" placeholder="0.00" required></label>
+      <label>
+        <span>Categoria</span>
+        <select id="entryCategory" name="entryCategory">
+          <option value="comida">Comida</option><option value="transporte">Transporte</option><option value="universidad">Universidad</option><option value="telefono">Telefono e internet</option><option value="materiales">Materiales</option><option value="ocio">Ocio</option><option value="ahorro">Ahorro</option><option value="otros">Otros</option>
+        </select>
+      </label>
+      <label id="frequencyField" class="is-hidden">
+        <span>Frecuencia</span>
+        <select id="entryFrequency" name="entryFrequency">
+          <option value="mensual">Mensual</option><option value="quincenal">Quincenal</option><option value="semanal">Semanal</option><option value="unico">Unico</option>
+        </select>
+      </label>
+      <label id="sourceField" class="is-hidden"><span>Fuente</span><input id="entrySource" name="entrySource" type="text" maxlength="48" placeholder="Ej. Beca o freelance"></label>
+      <label><span>Descripcion corta</span><input id="entryNote" name="entryNote" type="text" maxlength="72" placeholder="Opcional"></label>
+      <div class="entry-actions">
+        <button class="ghost-button" type="button" data-close-dialog="entry">Cancelar</button>
+        <button class="primary-button" id="saveEntry" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="entry-dialog" id="routineDialog">
+    <form method="dialog" class="entry-form" id="routineForm">
+      <div class="entry-header">
+        <div><p class="eyebrow">Rutina diaria</p><h3>Nuevo bloque</h3></div>
+        <button class="close-button" type="button" data-close-dialog="routine">Cerrar</button>
+      </div>
+      <label><span>Actividad</span><input id="routineName" name="routineName" type="text" maxlength="48" placeholder="Ej. Gym o Bloque de estudio" required></label>
+      <div class="time-range-grid">
+        <label><span>Inicio</span><input id="routineStartTime" name="routineStartTime" type="time" required></label>
+        <label><span>Fin</span><input id="routineEndTime" name="routineEndTime" type="time" required></label>
+      </div>
+      <label><span>Empieza el</span><input id="routineStartDate" name="routineStartDate" type="date" value="2026-03-24" required></label>
+      <label>
+        <span>Tipo</span>
+        <select id="routineType" name="routineType">
+          <option value="habit">Habito</option>
+          <option value="study">Estudio</option>
+          <option value="class">Clase</option>
+          <option value="personal">Personal</option>
+        </select>
+      </label>
+      <label>
+        <span>Repeticion</span>
+        <select id="routineRepeat" name="routineRepeat">
+          <option value="none">Una sola vez</option>
+          <option value="daily">Todos los dias</option>
+          <option value="weekly">Cada semana</option>
+        </select>
+      </label>
+      <label id="routineUntilField">
+        <span>Hasta que fecha</span>
+        <input id="routineUntilDate" name="routineUntilDate" type="date" value="2026-05-31">
+      </label>
+      <label><span>Nota corta</span><input id="routineNote" name="routineNote" type="text" maxlength="72" placeholder="Opcional"></label>
+      <div class="entry-actions">
+        <button class="ghost-button" type="button" data-close-dialog="routine">Cancelar</button>
+        <button class="primary-button" type="submit">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>
