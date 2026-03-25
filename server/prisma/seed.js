@@ -86,6 +86,11 @@ function getDateRange(definition) {
   return dates;
 }
 
+
+function formatDate(date) {
+  return new Date(date).toISOString().split("T")[0];
+}
+
 async function main() {
   const user = await prisma.user.upsert({
     where: { email: "you@orbit.app" },
